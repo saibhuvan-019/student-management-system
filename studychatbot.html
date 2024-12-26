@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSU StudyBot AI Assistant</title>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            overflow-x: hidden;
+            background-image: url('https://firebasestorage.googleapis.com/v0/b/widecanvas-d0dd4.appspot.com/o/additional-images%2Fchatbot%20picture.jpg?alt=media&token=e8fc9a2a-6aff-4318-934c-e48aed638d41');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .chat-container {
+            scrollbar-width: thin;
+            scrollbar-color: #CBD5E1 transparent;
+            height: calc(100vh - 400px);
+            min-height: 400px;
+            backdrop-filter: blur(10px);
+        }
+        .chat-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        .chat-container::-webkit-scrollbar-thumb {
+            background-color: #CBD5E1;
+            border-radius: 3px;
+        }
+        .typing-dot { animation: typing 1s infinite; }
+        @keyframes typing {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+        .study-suggestion {
+            transition: all 0.3s ease;
+        }
+        .study-suggestion:hover {
+            transform: translateY(-2px);
+        }
+        .logo-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .dsu-button {
+            transition: all 0.3s ease;
+        }
+        .dsu-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        @media (max-width: 640px) {
+            .features-bar {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 8px;
+            }
+            .features-bar::-webkit-scrollbar {
+                display: none;
+            }
+            .chat-container {
+                height: calc(100vh - 450px);
+                min-height: 300px;
+            }
+        }
+        .main-container {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div x-data="{ showChatbot: false }" class="container mx-auto px-4 py-8 max-w-4xl">
+        <!-- Welcome Screen -->
+        <div x-show="!showChatbot" class="flex flex-col items-center justify-center min-h-screen -mt-16">
+            <div class="main-container p-8 text-center max-w-2xl w-full">
+                <img src="https://firebasestorage.googleapis.com/v0/b/widecanvas-d0dd4.appspot.com/o/logos%2Fchatbot%20pic.svg?alt=media&token=68257005-6d39-492c-a27f-4e9d1e551554" 
+                     alt="StudyBot Logo" 
+                     class="w-32 h-32 mx-auto mb-6 logo-animation">
+                <h1 class="text-3xl font-bold text-gray-800 mb-4">Welcome to DSU StudyBot</h1>
+                <p class="text-lg text-gray-600 mb-8">Your AI-powered study companion for academic excellence</p>
+                <button @click="showChatbot = true" 
+                        class="bg-blue-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-700 transform hover:scale-105 transition-all duration-300 shadow-lg">
+                    Click to Start Learning
+                </button>
+            </div>
+        </div>
+
+        <!-- Chatbot Interface -->
+        <div x-show="showChatbot" x-data="studyBot()">
+            <!-- Header Section -->
+            <div class="text-center mb-8 p-6 rounded-2xl main-container">
+                <img src="https://firebasestorage.googleapis.com/v0/b/widecanvas-d0dd4.appspot.com/o/logos%2Fchatbot%20pic.svg?alt=media&token=68257005-6d39-492c-a27f-4e9d1e551554" 
+                     alt="StudyBot Logo" 
+                     class="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-4 logo-animation">
+                <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-2">DSU StudyBot AI Assistant</h2>
+                <p class="text-sm sm:text-base text-gray-600">Powered by DSU - Crafted by Rahul G N and Vedant Bidre</p>
+                
+                <!-- DSU Links -->
+                <div class="flex justify-center gap-4 mt-4 flex-wrap">
+                    <a href="https://www.dsu.edu.in/" target="_blank" rel="noopener noreferrer" 
+                       class="dsu-button bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 flex items-center gap-2">
+                        <i class="bi bi-globe"></i>
+                        DSU WEBPAGE
+                    </a>
+                    <a href="https://www.instagram.com/dayanandasagaruniversityblr/?hl=en" target="_blank" rel="noopener noreferrer"
+                       class="dsu-button bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-lg shadow hover:from-purple-600 hover:to-pink-600 flex items-center gap-2">
+                        <i class="bi bi-instagram"></i>
+                        DSU BLOG
+                    </a>
+                    <a href="https://ums.mydsi.org/Login.aspx" target="_blank" rel="noopener noreferrer"
+                       class="dsu-button bg-gradient-to-r from-green-500 to-teal-500 text-white px-4 py-2 rounded-lg shadow hover:from-green-600 hover:to-teal-600 flex items-center gap-2">
+                        <i class="bi bi-building"></i>
+                        ERP
+                    </a>
+                </div>
+            </div>
+
+            <!-- Chat Container -->
+            <div class="bg-white/90 rounded-2xl shadow-lg p-4 sm:p-6 backdrop-blur-lg">
+                <div class="flex flex-wrap gap-3 mb-6 p-3 bg-blue-50/80 rounded-lg">
+                    <button @click="startStudySession" class="flex items-center space-x-2 px-3 py-2 bg-white rounded-lg shadow-sm hover:shadow-md transition-all text-blue-600">
+                        <i class="bi bi-clock-history"></i>
+                        <span>Study Session</span>
+                    </button>
+                    <button @click="openResourceLibrary" class="flex items-center space-x-2 px-3 py-2 bg-white rounded-lg shadow-sm hover:shadow-md transition-all text-blue-600">
+                        <i class="bi bi-journal-text"></i>
+                        <span>Resources</span>
+                    </button>
+                    <button @click="showProgress" class="flex items-center space-x-2 px-3 py-2 bg-white rounded-lg shadow-sm hover:shadow-md transition-all text-blue-600">
+                        <i class="bi bi-graph-up"></i>
+                        <span>Progress</span>
+                    </button>
+                </div>
+
+                <div class="chat-container overflow-y-auto mb-4 space-y-4 p-4" x-ref="chatContainer">
+                    <template x-for="message in messages" :key="message.id">
+                        <div class="flex items-start space-x-3" :class="message.isUser ? 'justify-end' : ''">
+                            <template x-if="!message.isUser">
+                                <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="bi bi-robot text-blue-600"></i>
+                                </div>
+                            </template>
+                            <div :class="`${message.isUser ? 'bg-blue-500 text-white' : 'bg-gray-100'} rounded-lg p-3 max-w-[85%] sm:max-w-[80%] break-words shadow-sm`">
+                                <p class="whitespace-pre-wrap" x-text="message.content"></p>
+                            </div>
+                            <template x-if="message.isUser">
+                                <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="bi bi-person-fill text-white"></i>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+
+                <div class="border-t pt-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="flex-1">
+                            <input type="text" 
+                                   x-model="userInput" 
+                                   @keydown.enter="sendMessage"
+                                   class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                                   placeholder="Ask me anything about your studies..."
+                                   :disabled="isLoading">
+                        </div>
+                        <button @click="sendMessage" 
+                                class="bg-blue-600 text-white rounded-lg px-4 py-2 hover:bg-blue-700 transition-colors disabled:opacity-50"
+                                :disabled="isLoading || !userInput.trim()">
+                            <i class="bi bi-send"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function studyBot() {
+            return {
+                messages: [],
+                userInput: '',
+                isLoading: false,
+                async init() {
+                    this.addMessage("👋 Hello! I'm your AI-powered study assistant from DSU. I can help you with:\n\n📚 Finding study materials\n📅 Creating study schedules\n💡 Learning strategies\n📝 Subject-specific questions\n📊 Progress tracking\n\nHow can I help you today?", false);
+                },
+                async sendMessage() {
+                    if (!this.userInput.trim() || this.isLoading) return;
+                    
+                    const userMessage = this.userInput.trim();
+                    this.addMessage(userMessage, true);
+                    this.userInput = '';
+                    this.isLoading = true;
+
+                    try {
+                        const response = await fetch('https://r0c8kgwocscg8gsokogwwsw4.zetaverse.one/ai', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer XMG2HU5QDnXZONzZDGWRmBVKpCr1'
+                            },
+                            body: JSON.stringify({
+                                messages: [{
+                                    role: 'user',
+                                    content: [{
+                                        type: 'text',
+                                        text: `As a study assistant, help with: ${userMessage}`
+                                    }]
+                                }]
+                            })
+                        });
+
+                        if (!response.ok) throw new Error('Network response was not ok');
+                        const data = await response.json();
+                        this.addMessage(data.message, false);
+                    } catch (error) {
+                        console.error('Error:', error);
+                        this.addMessage("I apologize, but I'm having trouble connecting right now. Please try again in a moment.", false);
+                    } finally {
+                        this.isLoading = false;
+                        this.scrollToBottom();
+                    }
+                },
+                addMessage(content, isUser) {
+                    this.messages.push({
+                        id: Date.now(),
+                        content,
+                        isUser
+                    });
+                    this.scrollToBottom();
+                },
+                scrollToBottom() {
+                    this.$nextTick(() => {
+                        const container = this.$refs.chatContainer;
+                        container.scrollTop = container.scrollHeight;
+                    });
+                },
+                startStudySession() {
+                    this.addMessage("Let's start a focused study session! How long would you like to study for?", false);
+                },
+                openResourceLibrary() {
+                    this.addMessage("What subject are you looking for study materials in?", false);
+                },
+                showProgress() {
+                    this.addMessage("I'm analyzing your study patterns and progress...", false);
+                    setTimeout(() => {
+                        this.addMessage("Based on our interactions, you've been focusing well on your studies. Would you like specific progress details for any subject?", false);
+                    }, 1500);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
